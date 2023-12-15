@@ -43,12 +43,10 @@ export default class News extends Component {
 
                 //Previous page button
                 handleNextClick = async() => {
-
-
-                  if(this.state.page + 1  > Math.ceil(this.state.totalResults/20)){
-                    //do noting 
-                  } 
-                  else {
+                   if(this.state.page + 1 > Math.ceil(this.state.totalResults/20)){
+                    //do nothing
+                   }
+                   else {
                     // console.log("next");
                     let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=9b33c920ed65479ebf547d39acf49c90&page=${this.state.page+1}&pageSize=20`;
                     let data = await fetch(url);
