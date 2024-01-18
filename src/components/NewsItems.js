@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
 
 export default class NewsItems extends Component {
+
   render() {
     
     /*Desturcturing in JS: pulling title, description and imageUrl from this props */
  
     let {title, description, imageUrl, newsUrl} = this.props;
+    
+   
 
     /*Desturcturing in JS: pulling title and description from this props */
    return (

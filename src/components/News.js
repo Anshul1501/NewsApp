@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import NewsItems from './NewsItems'
+import LoadingSpinner from './LoadingSpinner';
 
 /* we have used class based component to iterate through the news, the moment the class is loaded constuctor will be exicuted,
 so we have defined states(aritcles, loading) as object inside constructor  */
@@ -10,51 +11,53 @@ export default class News extends Component {
 
                 constructor(){
                             super();
-                            console.log("Hello i am contructor from news");
-
                             /*State as Object*/
                             this.state = {
                                       articles: [],
                                       loading: false,
                                       page: 1
                             }
-                }
+                } 
     /*Fetch data from new API using using fetch */
                 async componentDidMount() {
-                    let url = "https://newsapi.org/v2/top-headlines?country=us&apiKey=9b33c920ed65479ebf547d39acf49c90&page=1pageSize=20";
+                    let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=9b33c920ed65479ebf547d39acf49c90&page=1&pageSize=${this.props.pageSize}`;
+                    this.setState({loading: true}); //Show loading 
                     let data = await fetch(url);
                     let parsedData = await data.json();
                     console.log(parsedData);
-                    this.setState({articles: parsedData.articles, totalResults: parsedData.totalResults})
+                    this.setState({articles: parsedData.articles, 
+                      totalResults: parsedData.totalResults,
+                      loading: false 
+                    })
                 }
                 //Next page button
                  handlePrevClick = async() => {
    
-                   // console.log("previous");
-                    let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=9b33c920ed65479ebf547d39acf49c90&page=${this.state.page-1}&pageSize=20`;
+                   // console.log("previous")
+                    let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=9b33c920ed65479ebf547d39acf49c90&page=${this.state.page-1}&pageSize=${this.props.pageSize}`;
+                    this.setState({loading: true});
                     let data = await fetch(url);
                     let parsedData = await data.json();
                     console.log(parsedData);
                     this.setState({
                       articles: parsedData.articles,
-                      page: this.state.page-1
+                      page: this.state.page-1,
+                      loading: false
                     })
                 }
 
                 //Previous page button
                 handleNextClick = async() => {
-                   if(this.state.page + 1 > Math.ceil(this.state.totalResults/20)){
-                    //do nothing
-                   }
-                   else {
-                    // console.log("next");
-                    let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=9b33c920ed65479ebf547d39acf49c90&page=${this.state.page+1}&pageSize=20`;
+                   if(!(this.state.page + 1 > Math.ceil(this.state.totalResults/this.props.pageSize))){
+                    let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=9b33c920ed65479ebf547d39acf49c90&page=${this.state.page+1}&pageSize=${this.props.pageSize}`;
+                    this.setState({loading: true})
                     let data = await fetch(url);
                     let parsedData = await data.json();
                     console.log(parsedData);
                     this.setState({
                       articles: parsedData.articles,
-                      page: this.state.page+1
+                      page: this.state.page+1,
+                      loading: false
                     })
                   }
                 }
@@ -64,6 +67,8 @@ export default class News extends Component {
     return (
       <div className='container my-5'>
         <h1>NewsMonkey Top - Headlines</h1>
+
+        {this.state.loading && <LoadingSpinner/>} {/* Loading spinner */}
 
          <div className="row">
             {/*itrating through all the news articles using map*/}
@@ -77,7 +82,7 @@ export default class News extends Component {
           </div>  
                 <div className="container d-flex justify-content-between">
                        <button disabled={this.state.page<=1} type="button" className="btn btn-dark" onClick={this.handlePrevClick}>&larr; Prev</button>
-                       <button type="button" className ="btn btn-dark" onClick={this.handleNextClick}>Next &rarr;</button>
+                       <button disabled={this.state.page + 1 > Math.ceil(this.state.totalResults/this.props.pageSize)} type="button" className ="btn btn-dark" onClick={this.handleNextClick}>Next &rarr;</button>
                 </div>
       </div>
     )
