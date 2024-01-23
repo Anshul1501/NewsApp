@@ -22,15 +22,17 @@ static defaultProps = {
 
    /*passiing article as variable array */
 
-                constructor(){
-                            super();
+                constructor(props){
+                            super(props);
                             /*State as Object*/
                             this.state = {
                                       articles: [],
                                       loading: false,
                                       page: 1
                             }
+                            document.title = `${this.props.category} - NewsMonkey`
                 } 
+
     /*Fetch data from new API using using fetch */
                 async componentDidMount() {
                     let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=9b33c920ed65479ebf547d39acf49c90&page=1&pageSize=${this.props.pageSize}`;
@@ -89,7 +91,8 @@ static defaultProps = {
             {this.state.articles.map((element)=>{
                 return   <div className="col-md-4 my-3" key={element.url}> 
                            <NewsItems title={element.title} description={element.description} 
-                                      imageUrl={element.urlToImage} newsUrl={element.url} />
+                                      imageUrl={element.urlToImage} newsUrl={element.url} author={element.author} 
+                                      publishedAt={element.publishedAt} source={element.source.name}/>
                          </div>
             })}
           </div>  
