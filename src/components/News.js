@@ -30,7 +30,7 @@ static defaultProps = {
                                       loading: false,
                                       page: 1
                             }
-                            document.title = `${this.props.category} - NewsMonkey`
+                            document.title = `${this.props.category} - NewsMaster`
                 } 
 
     /*Fetch data from new API using using fetch */
@@ -81,7 +81,7 @@ static defaultProps = {
   render() {
     return (
       <div className='container my-5'>
-        <h1 className='text-center'>NewsMonkey Top - Headlines</h1>
+        <h1 className='text-center'>NewsMaster Top - Headlines</h1>
 
         {this.state.loading && <LoadingSpinner/>} {/* Loading spinner */}
 

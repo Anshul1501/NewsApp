@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import defaultImage from './defaultImage.webp'
 
 export default class NewsItems extends Component {
 
@@ -19,7 +20,7 @@ export default class NewsItems extends Component {
    return (
       <div>
         <div className="card">
-                <img src={imageUrl} className="card-img-top" alt="..."/>
+                <img src={imageUrl || defaultImage} className="card-img-top" alt="..."/>
                      <div className="card-body">
                           <h5 className="card-title">  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
     {source}
